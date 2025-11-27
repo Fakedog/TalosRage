@@ -19,33 +19,36 @@
         <button id="play-btn">ENTRA IN ARENA</button>
     </div>
 
-    <div id="game-ui" style="display:none;">
-        <canvas id="gameCanvas"></canvas>
-    </div>
+    <canvas id="gameCanvas"></canvas>
 
-    <script type="module">
-        import { SETTINGS } from './js/config.js';
-        import { initUI } from './js/ui.js';
-        import { initThree } from './js/three-setup.js';
-        import { initSocket } from './js/socket.js';
-        import { setupInputs } from './js/inputs.js';
-        import { animate } from './js/game-loop.js';
+    <!-- CLASSIC SCRIPTS – NO MODULES -->
+    <script src="js/config.js"></script>
+    <script src="js/three-setup.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/socket.js"></script>
+    <script src="js/inputs.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/combat.js"></script>
+    <script src="js/game-loop.js"></script>
 
+    <script>
         const socket = io();
         window.socket = socket;
 
-        document.getElementById('play-btn').onclick = () => {
+        // THIS IS THE ONLY THING THAT WAS MISSING
+        document.getElementById('play-btn').addEventListener('click', () => {
             const name = document.getElementById('menu-input-name').value.trim() || "Guerriero";
             socket.emit('joinGame', { username: name });
             document.getElementById('main-menu').style.display = 'none';
-            document.getElementById('game-ui').style.display = 'block';
-        };
-
-        initUI();
-        initThree();
-        initSocket();
-        setupInputs();
-        animate();
+            document.getElementById('gameCanvas').style.display = 'block';
+            document.body.requestPointerLock();
+            initThree();
+            initSocket();
+            setupInputs();
+            animate();
+        });
     </script>
 </body>
 </html>
