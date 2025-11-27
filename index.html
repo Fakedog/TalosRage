@@ -3,25 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAGE QUIT - Multiplayer Arena</title>
+    <title>RAGE QUIT</title>
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <!-- tutto l'HTML del tuo ultimo file (menu, action-bar, modali, ecc.) -->
-    <div id="main-menu">…</div>
-    <div id="game-ui">…</div>
-    <div id="login-modal" class="modal">…</div>
-    <div id="bindings-modal" class="modal">…</div>
+    <div id="main-menu">
+        <div id="logo-container">
+            <img src="IMG/logo.jpg" alt="RAGE QUIT">
+        </div>
+        <div class="input-group">
+            <input type="text" id="menu-input-name" placeholder="NOME PLAYER" maxlength="12">
+        </div>
+        <button id="play-btn">ENTRA IN ARENA</button>
+    </div>
+
+    <div id="game-ui" style="display:none;">
+        <canvas id="gameCanvas"></canvas>
+    </div>
 
     <script type="module">
-        import './js/config.js';
+        import { SETTINGS } from './js/config.js';
         import { initUI } from './js/ui.js';
         import { initThree } from './js/three-setup.js';
         import { initSocket } from './js/socket.js';
         import { setupInputs } from './js/inputs.js';
         import { animate } from './js/game-loop.js';
+
+        const socket = io();
+        window.socket = socket;
+
+        document.getElementById('play-btn').onclick = () => {
+            const name = document.getElementById('menu-input-name').value.trim() || "Guerriero";
+            socket.emit('joinGame', { username: name });
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('game-ui').style.display = 'block';
+        };
 
         initUI();
         initThree();
