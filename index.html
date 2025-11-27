@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #gameCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; }
+    </style>
 </head>
 <body>
     <div id="main-menu">
@@ -21,7 +25,6 @@
 
     <canvas id="gameCanvas"></canvas>
 
-    <!-- CLASSIC SCRIPTS – NO MODULES -->
     <script src="js/config.js"></script>
     <script src="js/three-setup.js"></script>
     <script src="js/models.js"></script>
@@ -37,13 +40,18 @@
         const socket = io();
         window.socket = socket;
 
-        // THIS IS THE ONLY THING THAT WAS MISSING
         document.getElementById('play-btn').addEventListener('click', () => {
             const name = document.getElementById('menu-input-name').value.trim() || "Guerriero";
             socket.emit('joinGame', { username: name });
+
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('gameCanvas').style.display = 'block';
-            document.body.requestPointerLock();
+
+            // Force canvas size
+            const canvas = document.getElementById('gameCanvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
             initThree();
             initSocket();
             setupInputs();
