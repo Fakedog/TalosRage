@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGE QUIT - Multiplayer Arena</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <!-- tutto l'HTML del tuo ultimo file (menu, action-bar, modali, ecc.) -->
+    <div id="main-menu">…</div>
+    <div id="game-ui">…</div>
+    <div id="login-modal" class="modal">…</div>
+    <div id="bindings-modal" class="modal">…</div>
+
+    <script type="module">
+        import './js/config.js';
+        import { initUI } from './js/ui.js';
+        import { initThree } from './js/three-setup.js';
+        import { initSocket } from './js/socket.js';
+        import { setupInputs } from './js/inputs.js';
+        import { animate } from './js/game-loop.js';
+
+        initUI();
+        initThree();
+        initSocket();
+        setupInputs();
+        animate();
+    </script>
+</body>
+</html>
